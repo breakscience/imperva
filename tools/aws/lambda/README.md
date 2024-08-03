@@ -10,11 +10,11 @@ First, ensure that your Lambda function has the necessary permissions to read fr
         {
             "Effect": "Allow",
             "Action": [
-                "cloudwatch:GetMetricStatistics",
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-            ],
+	    	"cloudwatch:GetMetricStatistics",
+      		"logs:CreateLogGroup",
+		"logs:CreateLogStream",
+  		"logs:PutLogEvents"
+    		],
             "Resource": "*"
         }
     ]
@@ -25,14 +25,14 @@ First, ensure that your Lambda function has the necessary permissions to read fr
 
 Here’s an example of a Python Lambda function that calculates the 98th percentile for ingress traffic:
 
-import boto3
-import datetime
-import json
+    import boto3
+    import datetime
+    import json
 
-def lambda_handler(event, context):
-    cloudwatch = boto3.client('cloudwatch')
-    
-    # Define the time range for the metrics
+    def lambda_handler(event, context):
+    	cloudwatch = boto3.client('cloudwatch')
+
+    # Define the time range for the metrics 
     end_time = datetime.datetime.utcnow()
     start_time = end_time - datetime.timedelta(hours=1)
     
@@ -69,32 +69,34 @@ def lambda_handler(event, context):
             '98thPercentileIngressTraffic': percentile_value
         })
     }
-
-# To test locally
-if __name__ == "__main__":
-    print(lambda_handler({}, {}))
+	# To test locally
+	if __name__ == "__main__":
+    	print(lambda_handler({}, {}))
 
 
 3. Deploy the Lambda Function
 
 	1.	Create a Lambda Function:
-	•	Go to the AWS Lambda console.
-	•	Click “Create function”.
-	•	Choose “Author from scratch”.
-	•	Set the function name, runtime (Python 3.x), and role.
+			Go to the AWS Lambda console.
+			Click “Create function”.
+			Choose “Author from scratch”.
+			Set the function name, runtime (Python 3.x), and role.
+
 	2.	Add the Code:
-	•	Copy the above code into the function code editor.
+    			Copy the above code into the function code editor.
+   	
 	3.	Configure the Function:
-	•	Set the handler to lambda_function.lambda_handler.
-	4.	Deploy:
-	•	Save and deploy the function.
+    		Set the handler to lambda_function.lambda_handler.
+   	
+	5.	Deploy:
+			Save and deploy the function.
 
 4. Testing the Function
 
 You can test the function directly from the Lambda console or by invoking it using the AWS CLI:
 
-"aws lambda invoke --function-name YourLambdaFunctionName output.json
-cat output.json"
+	aws lambda invoke --function-name YourLambdaFunctionName output.json
+	cat output.json
 
 
 Replace YourNamespace and IngressTraffic with the appropriate namespace and metric name that you are using to collect ingress traffic data. The function calculates the 98th percentile for the last hour of ingress traffic data.
